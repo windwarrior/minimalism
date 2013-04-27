@@ -11,11 +11,11 @@ class LevelLoader(object):
         surf = pygame.image.load(os.path.join(self.datapath, filename))
         (width, height) = surf.get_size()
 
-        level = [[None for x in range(width)] for y in range(height)]
+        level = [[None for y in range(height)] for x in range(width)]
 
-        for i in range(height):
-            for j in range(width):
-                pixelcolor = surf.get_at((j,i))
+        for i in range(width):
+            for j in range(height):
+                pixelcolor = surf.get_at((i,j))
                 level[i][j] = self.color_to_tile.get_tile_by_color(pixelcolor)
 
         lev_obj = Level(level)
