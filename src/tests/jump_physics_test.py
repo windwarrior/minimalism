@@ -10,15 +10,14 @@ class JumpPhysicsTest(object):
         self._running = True
         self.clock = pygame.time.Clock()
         self.player = Player()
-        self.old_damage = self.player.get_rect()
-        
+
     def process_event(self, event):
         if event.type == QUIT:
             self._running = False
         elif event.type == KEYDOWN:
             if event.key == K_SPACE:
                 self.player.jump()
-            
+
             if event.key == K_LEFT:
                 self.player.goLeft = True
             elif event.key == K_RIGHT:
@@ -33,17 +32,15 @@ class JumpPhysicsTest(object):
     def update_entities(self):
         self.player.update()
 
-    def render(self): 
+    def render(self):
         self._display_surf.fill(pygame.Color("black"))
         pygame.draw.line(self._display_surf, pygame.Color("white"), (5, 440), (635, 440), 1)
-        pygame.draw.rect(self._display_surf, pygame.Color("green"), (5, 5, 630, 470), 1)       
-        pygame.draw.rect(self._display_surf, pygame.Color("red"), self.player.get_rect(), 1) 
-        pygame.display.update([self.player.get_rect(), self.old_damage])
-        self.old_damage = self.player.get_rect()
+        pygame.draw.rect(self._display_surf, pygame.Color("green"), (5, 5, 630, 470), 1)
+
+        pygame.draw.rect(self._display_surf, pygame.Color("red"), self.player.get_rect(), 1)
+        pygame.display.update()
 
     def run(self):
-        self.render()
-        pygame.display.update()
         while(self._running):
             for event in pygame.event.get():
                 self.process_event(event)
