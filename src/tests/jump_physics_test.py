@@ -5,7 +5,7 @@ from pygame.locals import *
 
 class JumpPhysicsTest(object):
     def __init__(self):
-        self.size = (640, 480)
+        self.size = (840, 480)
         self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
         self.clock = pygame.time.Clock()
@@ -34,8 +34,11 @@ class JumpPhysicsTest(object):
 
     def render(self):
         self._display_surf.fill(pygame.Color("black"))
-        pygame.draw.line(self._display_surf, pygame.Color("white"), (5, 440), (635, 440), 1)
-        pygame.draw.rect(self._display_surf, pygame.Color("green"), (5, 5, 630, 470), 1)
+        pygame.draw.line(self._display_surf, pygame.Color("white"), (5, 400), (250, 400), 1)
+        pygame.draw.line(self._display_surf, pygame.Color("white"), (590, 400), (835, 400), 1)
+        pygame.draw.line(self._display_surf, pygame.Color("white"), (250, 400), (250, 470), 1)
+        pygame.draw.line(self._display_surf, pygame.Color("white"), (590, 400), (590, 470), 1)
+        pygame.draw.rect(self._display_surf, pygame.Color("green"), (5, 5, 830, 470), 1)
 
         pygame.draw.rect(self._display_surf, pygame.Color("red"), self.player.get_rect(), 1)
         pygame.display.update()
@@ -52,7 +55,7 @@ class JumpPhysicsTest(object):
 class Player(object):
     def __init__(self):
         self.pos_x = 20
-        self.pos_y = 420
+        self.pos_y = 380
         self.height = 40
         self.width = 20
         self.max_x_vel = 10
@@ -91,8 +94,8 @@ class Player(object):
         # X positie "collision detection, niet zoals het hoort, maar voor deze demo
         # genoeg
 
-        if self.pos_x > 625:
-            self.pos_x = 625
+        if self.pos_x > 825:
+            self.pos_x = 825
             velX = 0
         elif self.pos_x < 15:
             self.pos_x = 15
@@ -103,8 +106,13 @@ class Player(object):
     
         # Y collision detection, als de player weer op de grond staat is hij niet aan
         # het springen
-        if(self.pos_y > 420):
-            self.pos_y = 420
+        if(self.pos_y > 380 and (self.pos_x < 250 or self.pos_x > 590)):
+            self.pos_y = 380
+            self.jumping = False
+            self.velocity = (velX, 0)
+            self.max_x_vel = 10
+        elif(self.pos_y > 450 and self.pos_x > 250 and self.pos_y < 590):
+            self.pos_y = 450
             self.jumping = False
             self.velocity = (velX, 0)
             self.max_x_vel = 10
