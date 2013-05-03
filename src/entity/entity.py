@@ -9,10 +9,11 @@ class Entity(object):
     max_vel = 10
     velocity = 0.0, 0.0
     alive = True
+    sprite_handler = 0
 
     @abc.abstractmethod
-    def __init__(self):
-        pass
+    def __init__(self, sprite_handler):
+        self.sprite_handler = sprite_handler
 
     @abc.abstractmethod
     def update(self):
