@@ -1,3 +1,5 @@
+#!/usr/bin/python2.7
+
 import pygame
 from pygame.locals import *
 
@@ -25,7 +27,7 @@ class JumpPhysicsTest(object):
             if event.key == K_LEFT:
                 self.player.goLeft = False
             elif event.key == K_RIGHT:
-                self.player.goRight = False            
+                self.player.goRight = False
 
     def update_entities(self):
         self.player.update()
@@ -53,7 +55,8 @@ class Player(object):
         self.pos_y = 420
         self.height = 40
         self.width = 20
-        self.max_vel = 10
+        self.max_x_vel = 10
+        self.max_y_vel = 20
         self.velocity = (0.0, 0.0)
         self.jumping = False
         self.goLeft = False
@@ -62,7 +65,7 @@ class Player(object):
     def jump(self):
         if not self.jumping:
             (oldXvel, oldYvel) = self.velocity
-            self.velocity = (oldXvel, -20)
+            self.velocity = (oldXvel, -self.max_y_vel)
             self.jumping = True
 
     def update(self):
@@ -74,9 +77,11 @@ class Player(object):
         # X velocity van de speler aanpassen, linear
         # in deze situatie kan de speler in de lucht bewegen
         if self.goRight:
-            velX = min(10, velX + 1)
+            self.max_x_vel = 4 if self.jumping and velX < 0 else self.max_x_vel
+            velX = min(self.max_x_vel, velX + 1)
         elif self.goLeft:
-            velX = max(-10, velX - 1)
+            self.max_x_vel = 4 if self.jumping and velX > 0 else self.max_x_vel
+            velX = max(-self.max_x_vel, velX - 1)
         else:
             if velX > 0:
                 velX = max(0, velX - 1)
@@ -102,10 +107,11 @@ class Player(object):
             self.pos_y = 420
             self.jumping = False
             self.velocity = (velX, 0)
+            self.max_x_vel = 10
 
         # Y velocity aanpassen aan de hand van of de speler springt of niet
         # in dit geval linear
-        self.velocity = (velX, velY + 1 if self.jumping else velY)
+        self.velocity = (velX, min(velY + 1, self.max_y_vel) if self.jumping else velY)
          
     
     def get_rect(self):
