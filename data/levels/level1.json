@@ -1,0 +1,33 @@
+{
+    "layers": [
+        {
+            "type": "background",
+            "background-image": "somefile.jpg",
+            "x-repeat": true,
+            "y-repeat": true,
+            "scroll-speed": 0.1
+        },
+        {
+            "type": "tiled",
+            "tiles": [
+                {
+                    "type": "stone",
+                    "x-pos": 0,
+                    "y-pos": 0
+                }
+            ],
+            "grid-size": 64,
+            "scroll-speed": 0.5
+        },
+        {
+            "type": "tiled",
+            "tiles": [],
+            "grid-size": 64,
+            "scroll-speed": 1.0 //Scroll speed is relative to the movement of our character
+        }
+    ],
+    "entities": [
+
+    ]
+
+}
