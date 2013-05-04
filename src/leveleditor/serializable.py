@@ -22,7 +22,10 @@ class SerializableLevel(Serializable):
             "entities": [e.serialize() for e in self.entities]
         }
 
-        return json.dumps(result)
+        return result
+
+    def serialize_to_json(self):
+        return json.dumps(self.serialize())
 
 
 class SerializableLayer(Serializable):
@@ -34,7 +37,7 @@ class SerializableLayer(Serializable):
             "scroll_speed": self.scroll_speed
         }
 
-        return json.dumps(result)
+        return result
 
 
 class SerializableBackgroundLayer(SerializableLayer):
@@ -53,7 +56,7 @@ class SerializableBackgroundLayer(SerializableLayer):
             "y-repeat": self.y_repeat
         }
 
-        return json.dumps(dict(json.loads(serialize_parent)) + result)
+        return dict(json.loads(serialize_parent).items() + result.items())
 
 
 class SerializableTile(Serializable):
@@ -69,4 +72,4 @@ class SerializableTile(Serializable):
             "y-pos": self.ypos
         }
 
-        return json.dumps(result)
+        return result
