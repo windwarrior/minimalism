@@ -19,6 +19,8 @@ class LevelEditor(object):
         self.tileview.set_model(self.tilestore)
         self.tileview.set_pixbuf_column(0)
         self.layerstore = builder.get_object("layerstore")
+        self.level_view = builder.get_object("drawingarea1")
+        self.level_view.set_size_request( 700, 700 );
         self.window.show_all()
 
         self.populate_with_data()
@@ -47,6 +49,14 @@ class Handler(object):
 
     def on_open_clicked(self, widget):
         print "Open!"
+
+    def draw_level(self, widget, cairo_context):
+        cairo_context.move_to(50, 50)
+        cairo_context.rel_line_to(0, 200)
+        cairo_context.rel_line_to(200, 0)
+        cairo_context.rel_line_to(0, -200)
+        cairo_context.set_source_rgb(0, 0, 0)
+        cairo_context.stroke()
 
 if __name__ == "__main__":
     le = LevelEditor()
