@@ -13,6 +13,7 @@ class Serializable(object):
 
 class SerializableLevel(Serializable):
     def __init__(self, layers, entities):
+        super(SerializableLevel, self).__init__()
         self.layers = layers
         self.entities = entities
 
@@ -30,6 +31,7 @@ class SerializableLevel(Serializable):
 
 class SerializableLayer(Serializable):
     def __init__(self, scroll_speed):
+        super(SerializableLayer, self).__init__()
         self.scroll_speed = scroll_speed
 
     def serialize(self):
@@ -56,12 +58,43 @@ class SerializableBackgroundLayer(SerializableLayer):
             "y-repeat": self.y_repeat
         }
 
-        return dict(json.loads(serialize_parent).items() + result.items())
+        return dict(serialize_parent.items() + result.items())
+
+
+class SerializableTiledLayer(SerializableLayer):
+    def __init__(self, scroll_speed, tiles, grid_size):
+        super(SerializableTiledLayer, self).__init__(scroll_speed)
+        self.tiles = tiles
+        self.grid_size = grid_size
+
+    def serialize(self):
+        serialize_parent = super(SerializableTiledLayer, self).serialize()
+        result = {
+            "type": "tiled",
+            "tiles": [t.serialize() for t in self.tiles],
+            "grid-size": self.grid_size
+        }
+
+        return dict(serialize_parent.items() + result.items())
+
+
+class SerializableTiledForegroundLayer(SerializableTiledLayer):
+    def __init__(self, scroll_speed, tiles, grid_size):
+        super(SerializableTiledForegroundLayer, self).__init__(scroll_speed, tiles, grid_size)
+
+    def serialize(self):
+        serialize_parent = super(SerializableTiledForegroundLayer, self).serialize()
+        result = {
+            "type": "tiled-foreground"
+        }
+
+        return dict(serialize_parent.items() + result.items())
 
 
 class SerializableTile(Serializable):
-    def __init__(self, type, xpos, ypos):
-        self.type = type
+    def __init__(self, tile_type, xpos, ypos):
+        super(SerializableTile, self).__init__()
+        self.type = tile_type
         self.xpos = xpos
         self.ypos = ypos
 
