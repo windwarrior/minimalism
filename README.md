@@ -1,4 +1,3 @@
 minimalism
 ==========
-
-Ludum dare 26 entry
+Not so ludum dare entry
