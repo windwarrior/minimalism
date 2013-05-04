@@ -1,0 +1,6 @@
+{
+    "name": "stone",
+    "solid": true,
+    "visible": true,
+    "icon": "stone.jpg"
+}
