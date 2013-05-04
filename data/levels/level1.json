@@ -20,7 +20,7 @@
             "scroll-speed": 0.5
         },
         {
-            "type": "tiled",
+            "type": "tiled-foreground",
             "tiles": [],
             "grid-size": 64,
             "scroll-speed": 1.0 //Scroll speed is relative to the movement of our character
