@@ -1,5 +1,6 @@
 __author__ = 'lennart'
 
+
 class TileData(object):
     def __init__(self, solid, visible, name, icon_location):
         self.solid = solid

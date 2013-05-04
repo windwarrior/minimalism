@@ -46,8 +46,8 @@ class SerializableBackgroundLayer(SerializableLayer):
     def __init__(self, scroll_speed, background_image, x_repeat, y_repeat):
         super(SerializableBackgroundLayer, self).__init__(scroll_speed)
         self.background_image = background_image
-        self.x_repeat = self.x_repeat
-        self.y_repeat = self.y_repeat
+        self.x_repeat = x_repeat
+        self.y_repeat = y_repeat
 
     def serialize(self):
         serialize_parent = super(SerializableBackgroundLayer, self).serialize()
