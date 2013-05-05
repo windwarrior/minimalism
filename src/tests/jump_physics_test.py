@@ -15,8 +15,12 @@ class JumpPhysicsTest(object):
         if event.type == QUIT:
             self._running = False
         elif event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                self._running = False
+
             if event.key == K_SPACE:
                 self.player.jump()
+
 
             if event.key == K_LEFT:
                 self.player.goLeft = True
@@ -28,16 +32,16 @@ class JumpPhysicsTest(object):
                 self.player.goLeft = False
             elif event.key == K_RIGHT:
                 self.player.goRight = False
+            if event.key == K_SPACE:
+                self.player.jump_key = False
 
     def update_entities(self):
         self.player.update()
 
     def render(self):
         self._display_surf.fill(pygame.Color("black"))
-        pygame.draw.line(self._display_surf, pygame.Color("white"), (5, 400), (250, 400), 1)
-        pygame.draw.line(self._display_surf, pygame.Color("white"), (590, 400), (835, 400), 1)
-        pygame.draw.line(self._display_surf, pygame.Color("white"), (250, 400), (250, 470), 1)
-        pygame.draw.line(self._display_surf, pygame.Color("white"), (590, 400), (590, 470), 1)
+        pygame.draw.line(self._display_surf, pygame.Color("white"), (5, 400), (835, 400), 1)
+
         pygame.draw.rect(self._display_surf, pygame.Color("green"), (5, 5, 830, 470), 1)
 
         pygame.draw.rect(self._display_surf, pygame.Color("red"), self.player.get_rect(), 1)
@@ -62,6 +66,7 @@ class Player(object):
         self.max_y_vel = 20
         self.velocity = (0.0, 0.0)
         self.jumping = False
+        self.jump_key = False
         self.goLeft = False
         self.goRight = False
 
@@ -70,12 +75,10 @@ class Player(object):
             (oldXvel, oldYvel) = self.velocity
             self.velocity = (oldXvel, -self.max_y_vel)
             self.jumping = True
+            self.jump_key = True
 
     def update(self):
         (velX, velY) = self.velocity
-
-        # X positie aanpassen aan de hand van de ingedrukte toets
-        self.pos_x = self.pos_x + velX
 
         # X velocity van de speler aanpassen, linear
         # in deze situatie kan de speler in de lucht bewegen
@@ -91,9 +94,11 @@ class Player(object):
             else:
                 velX = min(0, velX + 1)
 
+        # X positie aanpassen aan de hand van de ingedrukte toets
+        self.pos_x = self.pos_x + velX
+
         # X positie "collision detection, niet zoals het hoort, maar voor deze demo
         # genoeg
-
         if self.pos_x > 825:
             self.pos_x = 825
             velX = 0
@@ -101,26 +106,26 @@ class Player(object):
             self.pos_x = 15
             velX = 0
 
+        # Y velocity aanpassen aan de hand van of de speler springt of niet
+        # in dit geval linear
+        if self.jumping:
+            if not self.jump_key and velY < -3:
+                velY = -3
+            else:
+                velY += 1 if velY < self.max_y_vel else 0
+
         # Y positie aanpassen naar mate velocity
         self.pos_y =  self.pos_y + velY
     
         # Y collision detection, als de player weer op de grond staat is hij niet aan
         # het springen
-        if(self.pos_y > 380 and (self.pos_x < 250 or self.pos_x > 590)):
+        if(self.pos_y > 380):
             self.pos_y = 380
             self.jumping = False
             self.velocity = (velX, 0)
             self.max_x_vel = 10
-        elif(self.pos_y > 450 and self.pos_x > 250 and self.pos_y < 590):
-            self.pos_y = 450
-            self.jumping = False
-            self.velocity = (velX, 0)
-            self.max_x_vel = 10
 
-        # Y velocity aanpassen aan de hand van of de speler springt of niet
-        # in dit geval linear
-        self.velocity = (velX, min(velY + 1, self.max_y_vel) if self.jumping else velY)
-         
+        self.velocity = (velX, velY)
     
     def get_rect(self):
         xmin = self.pos_x - self.width / 2
