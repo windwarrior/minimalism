@@ -20,7 +20,7 @@ class LevelEditor(object):
         self.tileview.set_pixbuf_column(0)
         self.layerstore = builder.get_object("layerstore")
         self.level_view = builder.get_object("drawingarea1")
-        self.level_view.set_size_request( 700, 700 );
+        self.level_view.set_size_request( 700, 700 )
         self.window.show_all()
 
         self.populate_with_data()
